@@ -4,7 +4,7 @@ Open Source Project meant to manage the Attack Delay & KB of Worlds
 # Usage
 
 - Place in plugin folder
-- Run the command with its proper arguments /attackdelay {world} {cooldown or delay}
+- Run the command with its proper arguments /pam {kb:ad or delay} {world:list} {value}
 
 # Terms
 
