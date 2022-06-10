@@ -15,8 +15,8 @@ Open Source Project meant to manage the Attack Delay & KB of Worlds
 Copy and paste this where the code is located
 ~~~
 /*
-* Credits: zMxZero
-/*
+Credits: zMxZero
+*/
 ~~~
 # Other Plugins
 - [Eeries Knockback Manager](https://github.com/EerieAlchemist/KnockbackManager)
