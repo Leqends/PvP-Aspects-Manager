@@ -1,0 +1,28 @@
+name: PvP Aspects Manager
+main: HeliosTeam\PAM\Manager
+authors:
+  - zMxZero
+  - EerieAlchemist
+version: "2.0.0 Latest"
+api: 3.0.0
+description: "PvP Aspects Manager: A PvP Manager containing Knockback (X & Y) and Delay Management"
+commands:
+  attackdelay:
+    permission: "attackdelay.cmd"
+    usage: "attackdelay {world} {value}"
+    aliases:
+      - "adm"
+      - "ad"
+  knockback:
+    permission: "knockback.cmd"
+    usage: "knockback {world} {value}"
+    aliases:
+      - "kb"
+      - "kbm"
+  pam:
+    permission: "pam.cmd"
+    usage: "pam {kb:ad or delay} {world:list} {value}"
+    aliases:
+      - "pvpm"
+      - "mpvp"
+      - "pvpaspects"
