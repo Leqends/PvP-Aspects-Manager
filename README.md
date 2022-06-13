@@ -1,22 +1,28 @@
 # PvP Aspects Manager 
 Open Source Project meant to manage the Attack Delay & KB of Worlds
-
 # Usage
 
 - Place in plugin folder
-- Run the command with its proper arguments /pam {kb:ad or delay} {world:list} {value}
+- Restart the server
 
+# Commands
+~~~
+/knockback {world} {value}
+/attackdelay {world} {value}
+~~~
 # Terms
 
-- You may use this plugin for use
-- You may modify the code within the files, but please make sure to give credit 
-- You may use this for private use as well
+- You may modify the code within the files, but please make sure to give credit
 
 Copy and paste this where the code is located
 ~~~
 /*
-Credits: zMxZero
+Credits: zMxZero/Leqends
 */
 ~~~
 # Other Plugins
-- [Eeries Knockback Manager](https://github.com/EerieAlchemist/KnockbackManager)
+- [Eeries Gapple Cooldown](https://github.com/Eerie6560/Gapple-CD)
+
+#Acknowledgements 
+- [KingRainbow44](https://github.com/KingRainbow44) Helped with fixing major bugs
+- [Eerie6560](https://github.com/Eerie6560)
