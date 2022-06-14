@@ -6,7 +6,7 @@ projects:
   PvP-Aspects-Manager:
     path: ""
     libs:
-      - src: CortexPE/Commando/Commando
+      - src: CortexPE/Commando
         version: ^3.0.0
       - src: Muqsit/SimplePacketHandler/SimplePacketHandler
         version: ^0.1.0
