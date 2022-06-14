@@ -8,7 +8,9 @@ authors:
 version: "1.0.0-Release"
 api: 4.0.0
 description: "PvP Aspects Manager: A PvP Manager containing Knockback and Delay Management"
-
+depend:
+  - SimplePacketHandler
+  - Commando
 permissions:
   attackdelay.cmd:
     description: "Permission for Attack Delay Command"
