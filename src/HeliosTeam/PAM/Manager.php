@@ -1,122 +1,96 @@
 <?php
+
 /*
- * Copyright zMxZero/Leqends
+ * Copyright © 2022 KingRainbow44, Eerie6560, zMxZero/Leqends.
+ *
+ * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * All portions of this software are available for public use, provided that
+ * credit is given to the original author(s).
  */
+
 declare(strict_types=1);
 namespace HeliosTeam\PAM;
 
-use JetBrains\PhpStorm\Pure;
-use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\player\Player;
-use pocketmine\plugin\PluginBase;
+//Commando Imports
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
+
+//Plugin Imports
+use HeliosTeam\PAM\Commands\AttackdelayCMD;
+use HeliosTeam\PAM\Commands\KnockbackCMD;
+
+//Pmmp imports
 use pocketmine\event\Listener;
+use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Manager extends PluginBase implements Listener
 {
 
-    public Config $setworlds;
+    public static Config $setworlds;
+    private static self $instance;
 
+    /**
+     * @throws HookAlreadyRegistered
+     */
     public function onEnable() : void
     {
-        @mkdir($this->getDataFolder());
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->setworlds = new Config($this->getDataFolder() . "setworlds.yml", Config::YAML);
-        $this->getServer()->getCommandMap()->getCommand("attackdelay");
-        $this->getServer()->getCommandMap()->getCommand("knockback");
-    }
-
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
-    {
-
-        switch (strtolower($command->getName())) {
-            case "attackdelay":
-                if($sender instanceof Player) {
-                    if(!$sender->hasPermission("attackdelay.cmd")) {
-                        $sender->sendMessage("§cYou do not have permission");
-                        return true;
-                    }
-
-                    if(!isset($args[0])) {
-                        $sender->sendMessage("Usage: §b/attackdelay §c{world} §c{cooldown}");
-                        return true;
-                    }
-
-                    if($this->worldChecker($args[0]) == true) {
-                        if(!isset($args[1])) {
-                            $sender->sendMessage("§cPlease add a cooldown\nUsage: §b/attackdelay §c{world} §c{cooldown}");
-                            return true;
-                        } elseif (is_numeric($args[1])) {
-                            $sender->sendMessage("§bAttack delay for §f" . $args[0] . " §bhas been set to §f" . $args[1]);
-                            $this->getSetWorlds()->setNested("$args[0].attackdelay", intval($args[1]));
-                            $this->getSetWorlds()->save();
-                            return true;
-                        } else {
-                            $sender->sendMessage("§cValue must be numeric\nUsage: §b/attackdelay §c{world} §c{cooldown}");
-                            return true;
-                        }
-                    } else {
-                        $sender->sendMessage("§cWorld does not exist, please enter the folder name of the world");
-                        return true;
-                    }
-                }
-                break;
-            case "knockback":
-                if($sender instanceof Player) {
-                    if(!$sender->hasPermission("knockback.cmd")) {
-                        $sender->sendMessage("§cYou do not have permission");
-                        return true;
-                    }
-
-                    if(!isset($args[0])) {
-                        $sender->sendMessage("Usage: §b/knockback §c{world} §c{value}");
-                        return true;
-                    }
-
-                    if($this->worldChecker($args[0]) == true) {
-                        if(!isset($args[1])) {
-                            $sender->sendMessage("§cPlease add a value\nUsage: §b/knockback §c{world} §c{value}");
-                            return true;
-                        } elseif (is_numeric($args[1])) {
-                            $sender->sendMessage("§bKnockback for §f" . $args[0] . " §bhas been set to §f" . $args[1]);
-                            $this->getSetWorlds()->setNested("$args[0].knockback",  floatval($args[1]));
-                            $this->getSetWorlds()->save();
-                            return true;
-                        } else {
-                            $sender->sendMessage("§cValue must be numeric\nUsage: §b/knockback §c{world} §c{value}");
-                            return true;
-                        }
-                    } else {
-                        $sender->sendMessage("§cWorld does not exist, please enter the folder name of the world");
-                        return true;
-                    }
-                }
-                break;
+        self::$setworlds = new Config($this->getDataFolder() . "setworlds.yml", Config::YAML);
+        $this->saveDefaultConfig();
+        if(!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
         }
-        return true;
+        $this->registerCommands();
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     }
 
-    public function EntityDamageEvent(EntityDamageEvent $event)
+
+    public function onLoad(): void
     {
-        if($event->getEntity() instanceof Player && $event instanceof EntityDamageByEntityEvent) {
-            $player = $event->getEntity();
-            $worldName = $player->getWorld()->getFolderName();
-            foreach ($this->getServer()->getWorldManager()->getWorlds() as $level) {
-                if($player->getWorld() === $level) {
-                    $event->setKnockback($this->getSetWorlds()->getAll()[$worldName]["knockback"]);
-                    $event->setAttackCooldown($this->getSetWorlds()->getAll()[$worldName]["attackdelay"]);
-                }
-            }
-        }
+        self::$instance = $this;
     }
 
-    #[Pure] public function worldChecker(string $arg): bool
+    /**
+     * Registers the commands
+     */
+    public function registerCommands() {
+        $this->getServer()->getCommandMap()->register(
+            strtolower($this->getName()),
+            new AttackdelayCMD($this, "attackdelay", "The attack delay command", ["ad", "adm"])
+        );
+        $this->getCommand("attackdelay")->setPermission("attackdelay.cmd");
+        $this->getCommand("attackdelay")->setUsage("§battackdelay §c{world} §c{cooldown}");
+
+       $this->getServer()->getCommandMap()->register(
+            strtolower($this->getName()),
+            new KnockbackCMD($this, "knockback", "The knockback command", ["kb", "kbm"])
+        );
+        $this->getCommand("knockback")->setPermission("knockback.cmd");
+        $this->getCommand("knockback")->setUsage("§bknockback §c{world} §c{value}");
+
+    }
+
+
+
+    /**
+     * @param string $arg
+     * @return bool
+     */
+    public static function worldChecker(string $arg): bool
     {
         $rv = false;
-        foreach ($this->getServer()->getWorldManager()->getWorlds() as $world) {
+        foreach (self::getInstance()->getServer()->getWorldManager()->getWorlds() as $world) {
             if($world->getFolderName() === $arg) {
                 $rv = true;
             }
@@ -125,8 +99,12 @@ class Manager extends PluginBase implements Listener
         return $rv;
     }
 
-    public function getSetWorlds(): Config
+    public static function getInstance(): self {
+        return self::$instance;
+    }
+
+    public static function getSetWorlds(): Config
     {
-        return $this->setworlds;
+        return self::$setworlds;
     }
 }
