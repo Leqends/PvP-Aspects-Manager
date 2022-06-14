@@ -1,4 +1,6 @@
 # PvP Aspects Manager 
+[![](https://poggit.pmmp.io/shield.state/PvP_Aspects_Manager)](https://poggit.pmmp.io/p/PvP_Aspects_Manager)
+
 Open Source Project meant to manage the Attack Delay & KB of Worlds
 # Usage
 - Download the phar
