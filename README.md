@@ -3,9 +3,8 @@
 
 Open Source Project meant to manage the Attack Delay & KB of Worlds
 # Usage
-- Download the phar
+- Download the [phar](https://github.com/Leqends/PvP-Aspects-Manager/releases/download/1.0.0/PvP-Aspects-Manager.phar)
 - Place in plugin folder
-- Install [Commando](https://github.com/CortexPE/Commando) and [SimplePacketHandler](https://github.com/Muqsit/SimplePacketHandler)
 - Restart the server
 
 # Commands
