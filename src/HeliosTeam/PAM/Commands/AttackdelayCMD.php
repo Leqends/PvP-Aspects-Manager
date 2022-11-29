@@ -57,7 +57,7 @@ class AttackdelayCMD extends BaseCommand {
             $sender->sendMessage(self::getPermissionMessage());
         }
 
-        if(Manager::worldChecker($world$world) == true) {
+        if(Manager::worldChecker($world) == true) {
             if(is_numeric($cooldown)) {
                 $sender->sendMessage("§bAttack delay for §f" . $world . " §bhas been set to §f" . $cooldown);
                 $config->setNested("$world.attackdelay", intval($cooldown));
