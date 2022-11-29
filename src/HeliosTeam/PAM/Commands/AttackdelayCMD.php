@@ -51,15 +51,16 @@ class AttackdelayCMD extends BaseCommand {
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void {
         $config = Manager::getSetWorlds();
         $world = $args["world"];
+        $cooldown = $args["cooldown"];
 
         if(!$sender->hasPermission("attackdelay.cmd")) {
             $sender->sendMessage(self::getPermissionMessage());
         }
 
-        if(Manager::worldChecker($args["world"]) == true) {
-            if(is_numeric($args["cooldown"])) {
-                $sender->sendMessage("§bAttack delay for §f" . $args["world"] . " §bhas been set to §f" . $args["cooldown"]);
-                $config->setNested("$world.attackdelay", intval($args["cooldown"]));
+        if(Manager::worldChecker($world$world) == true) {
+            if(is_numeric($cooldown)) {
+                $sender->sendMessage("§bAttack delay for §f" . $world . " §bhas been set to §f" . $cooldown);
+                $config->setNested("$world.attackdelay", intval($cooldown));
                 $config->save();
             }
         } else {
