@@ -51,15 +51,16 @@ class KnockbackCMD extends BaseCommand
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void {
         $config = Manager::getSetWorlds();
         $world = $args["world"];
+        $value = $args["value"];
 
         if(!$sender->hasPermission("knockback.cmd")) {
             $sender->sendMessage(self::getPermissionMessage());
         }
 
-        if(Manager::worldChecker($args["world"]) == true) {
-            if(is_numeric($args["value"])) {
-                $sender->sendMessage("§bKnockback for §f" . $args["world"] . " §bhas been set to §f" . $args["value"]);
-                $config->setNested("$world.knockback", floatval($args["value"]));
+        if(Manager::worldChecker($world) == true) {
+            if(is_numeric($value)) {
+                $sender->sendMessage("§bKnockback for §f" . $world . " §bhas been set to §f" . $value);
+                $config->setNested("$world.knockback", floatval($value));
                 $config->save();
             }
         } else {
