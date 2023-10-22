@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright © 2022 KingRainbow44, Eerie6560, zMxZero/Leqends.
+ * Copyright © 2023 KingRainbow44, Eerie6560, Leqends.
  *
  * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
  *
@@ -24,15 +24,15 @@ namespace HeliosTeam\PAM;
 //Commando Imports
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
-
-//Plugin Imports
 use HeliosTeam\PAM\Commands\AttackdelayCMD;
 use HeliosTeam\PAM\Commands\KnockbackCMD;
-
-//Pmmp imports
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+
+//Plugin Imports
+
+//Pmmp imports
 
 class Manager extends PluginBase implements Listener
 {
@@ -64,24 +64,21 @@ class Manager extends PluginBase implements Listener
     /**
      * Registers the commands
      */
-    public function registerCommands() {
+    public function registerCommands(): void
+    {
         $this->getServer()->getCommandMap()->register(
             strtolower($this->getName()),
             new AttackdelayCMD($this, "attackdelay", "The attack delay command", ["ad", "adm"])
         );
-        $this->getCommand("attackdelay")->setPermission("attackdelay.cmd");
-        $this->getCommand("attackdelay")->setUsage("§battackdelay §c{world} §c{cooldown}");
+
 
        $this->getServer()->getCommandMap()->register(
             strtolower($this->getName()),
             new KnockbackCMD($this, "knockback", "The knockback command", ["kb", "kbm"])
         );
-        $this->getCommand("knockback")->setPermission("knockback.cmd");
-        $this->getCommand("knockback")->setUsage("§bknockback §c{world} §c{value}");
+
 
     }
-
-
 
     /**
      * @param string $arg
@@ -99,7 +96,8 @@ class Manager extends PluginBase implements Listener
         return $rv;
     }
 
-    public static function getInstance(): self {
+    public static function getInstance(): self
+    {
         return self::$instance;
     }
 

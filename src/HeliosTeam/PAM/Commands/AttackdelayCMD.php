@@ -3,7 +3,7 @@
 namespace HeliosTeam\PAM\Commands;
 
 /*
- * Copyright © 2022 KingRainbow44, Eerie6560, zMxZero/Leqends.
+ * Copyright © 2023 KingRainbow44, Eerie6560, Leqends.
  *
  * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
  *
@@ -21,50 +21,61 @@ namespace HeliosTeam\PAM\Commands;
  */
 
 //Plugin imports
+use CortexPE\Commando\args\IntegerArgument;
+use CortexPE\Commando\args\RawStringArgument;
+use CortexPE\Commando\BaseCommand;
 use HeliosTeam\PAM\Manager;
 use JsonException;
-
-//Commando stuff
-use CortexPE\Commando\args\IntegerArgument;
-use CortexPE\Commando\BaseCommand;
-use CortexPE\Commando\args\RawStringArgument;
-
-//Pocketmine stuff
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
 
+//Commando stuff
+
+//Pocketmine stuff
+
 class AttackdelayCMD extends BaseCommand {
 
-    protected function prepare(): void {
+    protected function prepare(): void
+    {
         try {
             $this->registerArgument(0, new RawStringArgument("world", false));
             $this->registerArgument(1, new IntegerArgument("cooldown", false));
+            $this->setPermission("attackdelay.cmd");
+            $this->setUsage("§battackdelay §c{world} §c{cooldown}");
         } catch (\Exception $exception){
             Server::getInstance()->getLogger()->debug("Unable to register argument: {$exception->getMessage()}");
         }
-
     }
 
     /**
      * @throws JsonException
      */
-    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void {
-        $config = Manager::getSetWorlds();
+    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
+    {
+        if(!$sender->hasPermission("attackdelay.cmd")) {
+            $sender->sendMessage(self::getPermissionMessage());
+            return;
+        }
+
         $world = $args["world"];
         $cooldown = $args["cooldown"];
 
-        if(!$sender->hasPermission("attackdelay.cmd")) {
-            $sender->sendMessage(self::getPermissionMessage());
+        if (!Manager::worldChecker($world)) {
+            $sender->sendMessage("§cWorld does not exist, please enter the folder name of the world");
+            return;
         }
 
-        if(Manager::worldChecker($world) == true) {
-            if(is_numeric($cooldown)) {
-                $sender->sendMessage("§bAttack delay for §f" . $world . " §bhas been set to §f" . $cooldown);
-                $config->setNested("$world.attackdelay", intval($cooldown));
-                $config->save();
-            }
-        } else {
-            $sender->sendMessage("§cWorld does not exist, please enter the folder name of the world");
+        if (!is_numeric($cooldown)) {
+            $sender->sendMessage("§cCooldown must be a numeric value");
+            return;
         }
+
+        $config = Manager::getSetWorlds();
+        $config->setNested("$world.attackdelay", intval($cooldown));
+        $config->save();
+
+        $sender->sendMessage("§bAttack delay for §f" . $world . " §bhas been set to §f" . $cooldown);
     }
+
+
 }

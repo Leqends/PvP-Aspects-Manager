@@ -3,7 +3,7 @@
 namespace HeliosTeam\PAM;
 
 /*
- * Copyright © 2022 KingRainbow44, Eerie6560, zMxZero/Leqends.
+ * Copyright © 2023 KingRainbow44, Eerie6560, Leqends.
  *
  * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
  *
@@ -30,30 +30,26 @@ class EventListener implements Listener
 {
     private $plugin;
 
-    public function __construct(Manager $plugin) {
+    public function __construct(Manager $plugin)
+    {
         $this->plugin = $plugin;
     }
 
-    public function EntityDamageEvent(EntityDamageEvent $event)
+    public function EntityDamageEvent(EntityDamageEvent $event): void
     {
-        if($event->getEntity() instanceof Player && $event instanceof EntityDamageByEntityEvent) {
-            $player = $event->getEntity();
-            $worldName = $player->getWorld()->getFolderName();
-            foreach ($this->plugin->getServer()->getWorldManager()->getWorlds() as $world) {
-                if($player->getWorld() === $world) {
-                    if(is_null(Manager::getSetWorlds()->getNested("$worldName.knockback"))) {
-                        $event->setKnockBack(1);
-                    } else {
-                        $event->setKnockBack(Manager::getSetWorlds()->getNested("$worldName.knockback"));
-                    }
-
-                    if(is_null(Manager::getSetWorlds()->getNested("$worldName.attackdelay"))) {
-                        $event->setAttackCooldown(1);
-                    } else {
-                        $event->setAttackCooldown(Manager::getSetWorlds()->getNested("$worldName.attackdelay"));
-                    }
-                }
-            }
+        if (!$event->getEntity() instanceof Player || !($event instanceof EntityDamageByEntityEvent)) {
+            return;
         }
+
+        $player = $event->getEntity();
+        $world = $player->getWorld();
+        $worldName = $world->getFolderName();
+        $setWorlds = Manager::getSetWorlds();
+
+        $knockback = $setWorlds->getNested("$worldName.knockback");
+        $attackDelay = $setWorlds->getNested("$worldName.attackdelay");
+
+        $event->setKnockBack(is_null($knockback) ? 1 : $knockback);
+        $event->setAttackCooldown(is_null($attackDelay) ? 1 : $attackDelay);
     }
 }
