@@ -29,6 +29,6 @@ Explore more plugins from the community:
 ## Acknowledgements
 Special thanks to the following contributors:
 
+- [CortexPE](https://github.com/CortexPE) & [Paroxity](https://github.com/Paroxity) for their open-source Commando, which greatly simplified command management.
 - [KingRainbow44](https://github.com/KingRainbow44) for their invaluable assistance.
 - [Eerie6560](https://github.com/Eerie6560)
-- [CortexPE](https://github.com/CortexPE) for their open-source Commando, which greatly simplified command management.
