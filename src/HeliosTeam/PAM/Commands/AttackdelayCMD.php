@@ -21,17 +21,17 @@ namespace HeliosTeam\PAM\Commands;
  */
 
 //Plugin imports
+use HeliosTeam\PAM\Manager;
+use JsonException;
+
+//Commando stuff
 use CortexPE\Commando\args\IntegerArgument;
 use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseCommand;
-use HeliosTeam\PAM\Manager;
-use JsonException;
-use pocketmine\command\CommandSender;
-use pocketmine\Server;
-
-//Commando stuff
 
 //Pocketmine stuff
+use pocketmine\command\CommandSender;
+use pocketmine\Server;
 
 class AttackdelayCMD extends BaseCommand {
 
@@ -76,6 +76,4 @@ class AttackdelayCMD extends BaseCommand {
 
         $sender->sendMessage("§bAttack delay for §f" . $world . " §bhas been set to §f" . $cooldown);
     }
-
-
 }

@@ -20,18 +20,18 @@ namespace HeliosTeam\PAM\Commands;
  * credit is given to the original author(s).
  */
 
-//Commando imports
+//Plugin imports
+use HeliosTeam\PAM\Manager;
+use JsonException;
+
+//Commando stuff
 use CortexPE\Commando\args\IntegerArgument;
 use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseCommand;
-use HeliosTeam\PAM\Manager;
-use JsonException;
+
+//Pocketmine stuff
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
-
-//Plugin imports
-
-//Pmmp imports
 
 class KnockbackCMD extends BaseCommand
 {

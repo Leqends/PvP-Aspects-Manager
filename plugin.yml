@@ -5,7 +5,7 @@ authors:
   - Eerie6560
   - KingRainbow44
 
-version: "2.0.0-DEV"
+version: "2.0.0-RELEASE"
 api: 5.0.0
 description: "PvP Aspects Manager: A PvP Manager containing Knockback and Delay Management"
 

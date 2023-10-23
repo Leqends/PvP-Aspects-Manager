@@ -55,7 +55,6 @@ class Manager extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     }
 
-
     public function onLoad(): void
     {
         self::$instance = $this;
@@ -71,13 +70,10 @@ class Manager extends PluginBase implements Listener
             new AttackdelayCMD($this, "attackdelay", "The attack delay command", ["ad", "adm"])
         );
 
-
        $this->getServer()->getCommandMap()->register(
             strtolower($this->getName()),
             new KnockbackCMD($this, "knockback", "The knockback command", ["kb", "kbm"])
         );
-
-
     }
 
     /**
@@ -86,14 +82,13 @@ class Manager extends PluginBase implements Listener
      */
     public static function worldChecker(string $arg): bool
     {
-        $rv = false;
-        foreach (self::getInstance()->getServer()->getWorldManager()->getWorlds() as $world) {
-            if($world->getFolderName() === $arg) {
-                $rv = true;
+        $worldManager = self::getInstance()->getServer()->getWorldManager();
+        foreach ($worldManager->getWorlds() as $world) {
+            if ($world->getFolderName() === $arg) {
+                return true;
             }
-            break;
         }
-        return $rv;
+        return false;
     }
 
     public static function getInstance(): self
