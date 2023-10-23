@@ -5,7 +5,7 @@
 Welcome to PvP Aspects Manager, an open-source project designed to efficiently manage Attack Delay and Knockback in your Minecraft: Bedrock Edition worlds.
 
 ## Installation
-1. Download the [PvP-Aspects-Manager.phar](https://github.com/Leqends/PvP-Aspects-Manager/releases/download/1.0.0/PvP-Aspects-Manager.phar).
+1. Download the [PvP-Aspects-Manager.phar](https://github.com/Leqends/PvP-Aspects-Manager/releases/tag/v2.0.0).
 2. Place the downloaded .phar file into your server's plugin folder.
 3. Restart your server.
 
