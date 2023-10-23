@@ -1,6 +1,6 @@
 # PvP Aspects Manager
 
-[![Plugin Status](https://poggit.pmmp.io/shield.state/PvP_Aspects_Manager)](https://poggit.pmmp.io/p/PvP_Aspects_Manager)
+[Poggit](https://poggit.pmmp.io/ci/Leqends/PvP-Aspects-Manager/PvP-Aspects-Manager)
 
 Welcome to PvP Aspects Manager, an open-source project designed to efficiently manage Attack Delay and Knockback in your Minecraft: Bedrock Edition worlds.
 
